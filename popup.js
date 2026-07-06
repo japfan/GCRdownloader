@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const initialState = document.getElementById('initial-state');
   const errorState = document.getElementById('error-state');
   const resultsState = document.getElementById('results-state');
-  const errorMessage = document.getElementById('errorMessage');
   const fileList = document.getElementById('file-list');
   const fileCount = document.getElementById('file-count');
   
@@ -46,8 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       
-      if (!tab.url.includes("classroom.google.com/c/")) {
-        showError("Ekstensi ini hanya bekerja di halaman Google Classroom pada tab 'Materi Kelas' (Classwork).");
+      if (!tab.url.includes("classroom.google.com")) {
+        showError("Ekstensi ini hanya bekerja di halaman Google Classroom. Buka tab 'Materi Kelas' (Classwork) terlebih dahulu.");
+        return;
+      }
+
+      if (!tab.url.includes('/c/') && !tab.url.includes('/w/')) {
+        showError("Pastikan Anda sudah membuka salah satu kelas di Google Classroom (tab 'Materi Kelas' / Classwork).");
         return;
       }
 
@@ -56,9 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
         target: { tabId: tab.id },
         files: ['content.js']
       }, (injectionResults) => {
-        if (chrome.runtime.lastError || !injectionResults || !injectionResults[0]) {
+        if (chrome.runtime.lastError) {
+          showError("Error eksekusi: " + chrome.runtime.lastError.message);
+          return;
+        }
+        if (!injectionResults || !injectionResults[0]) {
           showError("Gagal men-scan halaman. Pastikan Anda berada di tab 'Materi Kelas' dan coba muat ulang halaman.");
-          console.error(chrome.runtime.lastError);
           return;
         }
 
@@ -68,8 +75,21 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        detectedFiles = files;
-        renderFileList(files);
+        // Check if only debug placeholder was returned
+        if (files.length === 1 && files[0].id === 'debug_no_materials_found') {
+          showError("Gagal mendeteksi materi.\n\nDetail debug:\n" + files[0].title.replace('DEBUG: ', '').replace(/\s*\|\s*/g, '\n• '));
+          return;
+        }
+
+        // Filter out any debug entries
+        const realFiles = files.filter(f => f.id !== 'debug_no_materials_found');
+        if (realFiles.length === 0) {
+          showError("Tidak ada materi yang terdeteksi. Coba muat ulang halaman Classwork dan pastikan semua materi sudah terlihat.");
+          return;
+        }
+
+        detectedFiles = realFiles;
+        renderFileList(realFiles);
         showResults();
       });
     } catch (err) {

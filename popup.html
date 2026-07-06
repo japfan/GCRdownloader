@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GCR Materi Downloader</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="popup.css">
 </head>
+
 <body class="bg-gray-50 w-96 font-sans text-gray-800">
   <!-- Header -->
   <header class="bg-blue-600 text-white p-4 shadow-md flex justify-between items-center">
@@ -26,7 +28,8 @@
       <p class="text-sm text-gray-500 mb-4">
         Buka tab "Materi Kelas" (Classwork) di Google Classroom, lalu klik tombol di bawah untuk mendeteksi materi.
       </p>
-      <button id="btn-scan" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded shadow transition-colors">
+      <button id="btn-scan"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded shadow transition-colors">
         Scan Materi
       </button>
     </div>
@@ -34,7 +37,10 @@
     <!-- Error State -->
     <div id="error-state" class="hidden text-center py-6">
       <div class="text-red-500 mb-2">
-        <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
       </div>
       <p id="error-message" class="text-sm text-gray-600 mb-4"></p>
       <button id="btn-back" class="text-blue-600 text-sm hover:underline">Kembali</button>
@@ -63,12 +69,17 @@
             <span id="progress-percent">0%</span>
           </div>
           <div class="w-full bg-gray-200 rounded-full h-2">
-            <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%">
+            </div>
           </div>
         </div>
 
-        <button id="btn-download" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow transition-colors flex items-center justify-center">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+        <button id="btn-download"
+          class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow transition-colors flex items-center justify-center">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+          </svg>
           Download Terpilih
         </button>
       </div>
@@ -77,4 +88,5 @@
 
   <script src="popup.js"></script>
 </body>
+
 </html>
