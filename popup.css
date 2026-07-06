@@ -1,0 +1,28 @@
+/* Custom Scrollbar for the file list */
+#file-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+#file-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+#file-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+#file-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* File icon colors based on type */
+.icon-pdf { color: #ef4444; } /* Red */
+.icon-document { color: #3b82f6; } /* Blue */
+.icon-presentation { color: #f59e0b; } /* Yellow */
+.icon-spreadsheet { color: #10b981; } /* Green */
+.icon-image { color: #8b5cf6; } /* Purple */
+.icon-video { color: #ec4899; } /* Pink */
+.icon-archive { color: #64748b; } /* Slate */
+.icon-unknown { color: #9ca3af; } /* Gray */
