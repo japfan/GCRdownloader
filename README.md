@@ -1,27 +1,28 @@
 # 🎓 GCR Materi Downloader
 
-Ekstensi Chrome untuk mengunduh materi kelas dari **Google Classroom** secara massal (bulk download).
+Ekstensi Chrome untuk mengunduh materi kelas secara massal dari **Google Classroom** dan **SPADA UNS**.
 
-![Version](https://img.shields.io/badge/version-1.0-blue)
+![Version](https://img.shields.io/badge/version-1.1-blue)
 ![Manifest](https://img.shields.io/badge/manifest-v3-green)
 
 ## ✨ Fitur
 
-- 🔍 **Deteksi otomatis** — Scan semua file/lampiran di halaman *Classwork* Google Classroom
-- 📂 **Multi-format** — Dokumen, Slides, Sheets, Forms, PDF, gambar, video, ZIP, dan lainnya
+- 🔍 **Multi-platform** — Google Classroom + SPADA UNS / Moodle
+- 📂 **Multi-format** — PDF, PPTX, DOCX, XLSX, CSV, gambar, video, ZIP, dan lainnya
 - ✅ **Pilih & unduh massal** — Centang file yang ingin diunduh, klik sekali
 - 📊 **Progress bar** — Pantau proses unduhan real-time
+- 🌙 **Dark mode** — Toggle light/dark, preferensi disimpan otomatis
 - 🇮🇩 **UI Bahasa Indonesia** — Antarmuka full Bahasa Indonesia
-- 🔒 **Privasi terjaga** — Semua proses berjalan lokal di browser, tidak ada data dikirim ke server
+- 🔒 **Privasi terjaga** — Data aman karena semua proses berjalan lokal di browser
 
 ## 🚀 Instalasi (Manual)
 
 > Ekstensi belum dipublikasikan di Chrome Web Store. Ikuti langkah berikut untuk install secara manual:
 
-1. **Download atau clone repositori ini:**
-   ```bash
-   git clone https://github.com/japfan/GCRdownloader.git
-   ```
+1. **Download ekstensi:**
+   - **[⬇ Download ZIP langsung](https://github.com/japfan/GCRdownloader/archive/refs/heads/main.zip)**
+   - Atau clone: `git clone https://github.com/japfan/GCRdownloader.git`
+   - Ekstrak ZIP ke folder manapun
 
 2. **Buka Chrome Extensions:**
    - Buka `chrome://extensions/` di Chrome
@@ -35,72 +36,92 @@ Ekstensi Chrome untuk mengunduh materi kelas dari **Google Classroom** secara ma
 
 ## 📖 Cara Pakai
 
+### Google Classroom
 1. Buka [Google Classroom](https://classroom.google.com)
 2. Masuk ke salah satu **kelas**
 3. Klik tab **Materi Kelas** (Classwork)
-4. Klik icon ekstensi ![icon](icons/icon-16.png) di toolbar Chrome
-5. Klik tombol **Scan Materi**
-6. Centang file yang ingin diunduh (atau biarkan *Pilih Semua*)
-7. Klik **Download Terpilih**
-8. File tersimpan di folder `GCR_Materi/` di direktori download Chrome
+4. Klik icon ekstensi → **Scan Materi**
+5. Centang file → **Download Terpilih**
+6. File tersimpan di folder `GCR_Materi/`
+
+### SPADA / Moodle
+1. Buka SPADA UNS (`spada.uns.ac.id`) atau Moodle instansi lain
+2. Masuk ke halaman **course** (`course/view.php?id=...`)
+3. Klik icon ekstensi → **Scan Materi**
+4. Centang file → **Download Terpilih**
+5. File tersimpan di folder `GCR_Materi/`
 
 ## 📁 Struktur File
 
 ```
 GCRdownloader/
 ├── manifest.json       # Konfigurasi ekstensi (Manifest V3)
-├── background.js       # Service worker — handle download queue
-├── content.js          # Content script — scraping halaman Classroom
-├── popup.html          # UI popup ekstensi (Tailwind CSS)
-├── popup.js            # Logic popup — scan, pilih, unduh
-├── popup.css           # Styling tambahan
-├── icons/              # Icon ekstensi (16px, 48px, 128px)
+├── background.js       # Service worker — download queue + auth cookies
+├── content.js          # Content script — scraper GCR + Moodle
+├── popup.html          # UI popup (Tailwind CSS)
+├── popup.js            # Logic popup — scan, pilih, unduh, dark mode
+├── popup.css           # Styling + dark mode
+├── diagnose.js         # Script diagnostik DOM (untuk debugging SPADA)
+├── icons/              # Icon ekstensi + logo
 └── README.md           # File ini
 ```
 
+## 🎯 Platform yang Didukung
+
+| Platform | URL Pattern | Status |
+|----------|------------|--------|
+| Google Classroom | `classroom.google.com` | ✅ File + Drive links |
+| SPADA UNS | `spada.uns.ac.id` | ✅ pluginfile + mod/resource |
+| Moodle (generik) | domain dengan `/course/view.php` | ✅ Auto-detect |
+
 ## 🎯 Format File yang Didukung
 
-| Tipe | Google Format | Output |
-|------|--------------|--------|
-| 📄 Dokumen | `docs.google.com/document` | PDF |
-| 📊 Presentasi | `docs.google.com/presentation` | PDF |
-| 📈 Spreadsheet | `docs.google.com/spreadsheets` | PDF |
-| 📋 Form | `docs.google.com/forms` | - * |
-| 📁 Drive File | `drive.google.com/file/...` | Original |
-| 🖼️ Gambar | `.jpg` `.png` `.gif` `.webp` | Original |
-| 🎥 Video | `.mp4` `.mkv` `.webm` | Original |
-| 📦 Arsip | `.zip` `.rar` `.7z` | Original |
+| Tipe Ekstensi | Google Format | SPADA/Moodle |
+|--------------|--------------|--------------|
+| 📄 PDF | Docs export → PDF | Download langsung |
+| 📊 PPTX | Slides export → PDF | Download langsung |
+| 📈 XLSX / CSV | Sheets export → PDF | Download langsung |
+| 📝 DOCX | - | Download langsung |
+| 🖼️ Gambar | Drive file | Download langsung |
+| 🎥 Video | Drive file | Download langsung |
+| 📦 ZIP/RAR | Drive file | Download langsung |
+| 🔗 URL eksternal | - | Buka di tab baru |
 
-*\* Google Forms dan Drive Folder tidak bisa diexport via URL langsung. File akan muncul tapi unduhan mungkin gagal.*
+*\* Google Forms dan Drive Folder tidak bisa diunduh via URL langsung.*
 
 ## ⚙️ Permission
 
 | Permission | Kenapa Dibutuhkan |
 |-----------|-------------------|
-| `activeTab` | Mengakses tab Classroom yang sedang aktif |
+| `activeTab` | Mengakses tab yang sedang aktif |
+| `cookies` | Membaca cookie sesi untuk download dari SPADA/Moodle |
 | `downloads` | Menyimpan file ke komputer |
-| `scripting` | Menyuntikkan script untuk mendeteksi materi di halaman |
-| `storage` | Menyimpan konfigurasi (opsional, untuk fitur mendatang) |
-| Host: `classroom.google.com` | Hanya berjalan di Google Classroom |
-| Host: `drive.google.com` | Deteksi dan unduh file Drive |
-| Host: `docs.google.com` | Deteksi dan export Docs/Sheets/Slides |
+| `scripting` | Menyuntikkan script untuk mendeteksi materi |
+| `storage` | Menyimpan preferensi dark mode |
+| Host: `classroom.google.com` | Google Classroom |
+| Host: `drive.google.com` + `docs.google.com` | Google Drive & Docs |
+| Host: `spada.uns.ac.id` | SPADA UNS |
 
 ## ❓ Troubleshooting
 
-### "Gagal mendeteksi materi"
-- Pastikan Anda di tab **Materi Kelas** (Classwork), bukan Stream/Forum
+### "Gagal mendeteksi materi" (Google Classroom)
+- Pastikan Anda di tab **Materi Kelas** (Classwork), bukan Stream
 - Scroll halaman sampai semua materi termuat (Google Classroom pakai lazy-load)
-- Coba **refresh halaman**, lalu klik Scan lagi
-- Debug info akan muncul di popup — periksa apakah link Google Drive/Docs terdeteksi
+- Refresh halaman, lalu klik Scan lagi
 
-### "Gagal men-scan halaman"
-- Pastikan Anda **sudah masuk ke salah satu kelas** (bukan halaman daftar kelas)
-- URL harus mengandung `classroom.google.com/c/...` atau `classroom.google.com/w/...`
+### "Gagal mendeteksi materi" (SPADA/Moodle)
+- Pastikan Anda di halaman **course** (`course/view.php?id=...`), bukan dashboard
+- Jalankan `diagnose.js` di Console DevTools untuk melihat struktur halaman
+- Paste hasil diagnostik ke developer untuk penyesuaian
 
-### Download gagal untuk file tertentu
-- Google Forms tidak bisa diunduh via URL export — buka manual
-- File yang disetel *View Only* mungkin butuh akses tambahan
-- Coba buka file di tab baru, lalu klik Scan ulang
+### Download gagal (SPADA)
+- Ekstensi perlu permission `cookies` — pastikan sudah di-allow saat install
+- File `mod/resource` akan di-resolve ke `pluginfile.php` sebelum download
+- Coba klik file langsung di browser — kalau bisa, ekstensi juga harusnya bisa
+
+### File tanpa ekstensi
+- File dari `mod/resource` akan otomatis diberi ekstensi dari URL hasil redirect
+- Kalau masih tanpa ekstensi, tambahkan manual atau laporkan ke developer
 
 ---
 
