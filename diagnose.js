@@ -162,7 +162,7 @@
   console.log('=== SPADA DIAGNOSTIC REPORT ===');
   console.log(JSON.stringify(report, null, 2));
   console.log('');
-  console.log('COPY output JSON di atas, paste ke chat Claude.');
+  console.log('COPY output JSON di atas, kirimkan ke developer.');
   console.log('=== END ===');
 
   return report;
