@@ -80,15 +80,22 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-      if (!tab.url.includes('classroom.google.com')) {
-        showError('Ekstensi ini hanya bekerja di halaman Google Classroom.\n\nBuka tab "Materi Kelas" (Classwork) terlebih dahulu.');
+      if (!tab.url.includes('classroom.google.com') && !tab.url.includes('spada.uns.ac.id')) {
+        showError('Ekstensi ini bekerja di:\n• Google Classroom → tab Materi Kelas\n• SPADA UNS → halaman course\n\nBuka salah satu halaman tersebut lalu klik Scan.');
         btnScan.disabled = false;
         btnScan.textContent = 'Scan Materi';
         return;
       }
 
-      if (!tab.url.includes('/c/') && !tab.url.includes('/w/')) {
+      if (tab.url.includes('classroom.google.com') && !tab.url.includes('/c/') && !tab.url.includes('/w/')) {
         showError('Pastikan Anda sudah membuka salah satu kelas di Google Classroom (tab "Materi Kelas" / Classwork).');
+        btnScan.disabled = false;
+        btnScan.textContent = 'Scan Materi';
+        return;
+      }
+
+      if (tab.url.includes('spada.uns.ac.id') && !tab.url.includes('/course/') && !tab.url.includes('/mod/')) {
+        showError('Pastikan Anda sudah membuka halaman course di SPADA (course/view.php?id=...).');
         btnScan.disabled = false;
         btnScan.textContent = 'Scan Materi';
         return;
@@ -128,11 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Check: debug only
-        if (files.length === 1 && files[0].id === 'debug_no_materials_found') {
-          showError(
-            'Gagal mendeteksi materi.\n\nDetail debug:\n• ' +
-            files[0].title.replace('DEBUG: ', '').replace(/\s*\|\s*/g, '\n• ')
-          );
+        if (files.length === 1 && (files[0].id === 'debug_no_materials_found' || files[0].id === 'debug_unsupported_page')) {
+          const rawTitle = files[0].title
+            .replace(/^(DEBUG|MOODLE_DEBUG):\s*/, '')
+            .replace(/\s*\|\s*/g, '\n• ');
+          showError('Gagal mendeteksi materi.\n\nDetail debug:\n• ' + rawTitle);
           return;
         }
 

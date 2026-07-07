@@ -5,6 +5,7 @@
   "description": "Download materi Google Classroom secara massal dengan mudah.",
   "permissions": [
     "activeTab",
+    "cookies",
     "downloads",
     "scripting",
     "storage"
@@ -12,7 +13,8 @@
   "host_permissions": [
     "*://classroom.google.com/*",
     "*://drive.google.com/*",
-    "*://docs.google.com/*"
+    "*://docs.google.com/*",
+    "*://spada.uns.ac.id/*"
   ],
   "background": {
     "service_worker": "background.js"
