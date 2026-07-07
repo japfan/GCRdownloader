@@ -71,7 +71,7 @@ GCRdownloader/
 | 🎥 Video | `.mp4` `.mkv` `.webm` | Original |
 | 📦 Arsip | `.zip` `.rar` `.7z` | Original |
 
-*\* Google Forms tidak bisa diexport via URL langsung — file akan muncul tapi unduhan mungkin gagal.*
+*\* Google Forms dan Drive Folder tidak bisa diexport via URL langsung. File akan muncul tapi unduhan mungkin gagal.*
 
 ## ⚙️ Permission
 
@@ -104,4 +104,4 @@ GCRdownloader/
 
 ---
 
-© 2025 — Dibuat dengan ❤️ untuk memudahkan mahasiswa Indonesia
+© 2026 — Dibuat untuk memudahkan mahasiswa Indonesia
