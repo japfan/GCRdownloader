@@ -1,4 +1,4 @@
-/* Custom Scrollbar for the file list */
+/* ── Custom Scrollbar ── */
 #file-list::-webkit-scrollbar {
   width: 6px;
 }
@@ -17,12 +17,131 @@
   background: #94a3b8;
 }
 
-/* File icon colors based on type */
-.icon-pdf { color: #ef4444; } /* Red */
-.icon-document { color: #3b82f6; } /* Blue */
-.icon-presentation { color: #f59e0b; } /* Yellow */
-.icon-spreadsheet { color: #10b981; } /* Green */
-.icon-image { color: #8b5cf6; } /* Purple */
-.icon-video { color: #ec4899; } /* Pink */
-.icon-archive { color: #64748b; } /* Slate */
-.icon-unknown { color: #9ca3af; } /* Gray */
+/* ── File icon colors ── */
+.icon-pdf { color: #ef4444; }
+.icon-document { color: #3b82f6; }
+.icon-presentation { color: #f59e0b; }
+.icon-spreadsheet { color: #10b981; }
+.icon-image { color: #8b5cf6; }
+.icon-video { color: #ec4899; }
+.icon-archive { color: #64748b; }
+.icon-unknown { color: #9ca3af; }
+.icon-drive { color: #fbbc04; }
+.icon-form { color: #7248b9; }
+.icon-drawing { color: #e37400; }
+.icon-audio { color: #00acc1; }
+
+/* ── Dark mode toggle button ── */
+#btn-theme {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  border-radius: 6px;
+  line-height: 1;
+  transition: background 0.2s;
+  color: #fbbf24;
+}
+#btn-theme:hover {
+  background: rgba(255,255,255,0.15);
+}
+body.dark #btn-theme {
+  color: #93c5fd;
+}
+body.dark #btn-theme:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* ══════════════════════════════════════ */
+/*  🌙  DARK MODE  (body.dark)           */
+/* ══════════════════════════════════════ */
+body.dark {
+  background-color: #1e1e24 !important;
+  color: #d1d5db !important;
+}
+
+/* ── Header ── */
+body.dark header {
+  background-color: #1a3a5c !important;
+  border-bottom: 1px solid #2d3748;
+}
+body.dark header h1 { color: #e2e8f0 !important; }
+body.dark header p  { color: #93c5fd !important; }
+
+/* ── Buttons ── */
+body.dark #btn-scan {
+  background-color: #2563eb !important;
+}
+body.dark #btn-scan:hover { background-color: #1d4ed8 !important; }
+
+body.dark #btn-download {
+  background-color: #059669 !important;
+}
+body.dark #btn-download:hover { background-color: #047857 !important; }
+body.dark #btn-download.opacity-50 {
+  background-color: #374151 !important;
+  color: #9ca3af !important;
+}
+
+body.dark #btn-back { color: #93c5fd !important; }
+
+/* ── Initial state ── */
+body.dark #initial-state p { color: #9ca3af !important; }
+
+/* ── Error ── */
+body.dark #error-message {
+  background-color: #27272a !important;
+  color: #d1d5db !important;
+}
+
+/* ── File list ── */
+body.dark #file-list {
+  background-color: #18181b !important;
+  border-color: #374151 !important;
+}
+body.dark #file-count { color: #d1d5db !important; }
+body.dark #results-state h2 { color: #d1d5db !important; }
+
+body.dark #file-list .hover\:bg-gray-50:hover,
+body.dark #file-list > div:hover,
+body.dark .hover\:bg-gray-50:hover {
+  background-color: #27272a !important;
+}
+body.dark #file-list .border-b { border-color: #27272a !important; }
+
+/* ── Labels & text ── */
+body.dark label .text-sm,
+body.dark label span,
+body.dark label.flex.items-center.text-sm,
+body.dark .flex.justify-between.items-center label {
+  color: #e5e7eb !important;
+}
+
+/* ── Progress ── */
+body.dark #progress-container .bg-gray-200 { background-color: #374151 !important; }
+body.dark #progress-text, body.dark #progress-percent { color: #9ca3af !important; }
+
+/* ── Status badge ── */
+body.dark #status-badge.bg-blue-400   { background-color: #1d4ed8 !important; color: #e2e8f0 !important; }
+body.dark #status-badge.bg-green-400  { background-color: #047857 !important; color: #e2e8f0 !important; }
+body.dark #status-badge.bg-yellow-400 { background-color: #a16207 !important; color: #fef3c7 !important; }
+
+/* ── Checkbox ── */
+body.dark input[type="checkbox"] { accent-color: #3b82f6; }
+
+/* ── Footer ── */
+body.dark .border-t { border-color: #374151 !important; }
+
+/* ── Scrollbar ── */
+body.dark #file-list::-webkit-scrollbar-track { background: #27272a; }
+body.dark #file-list::-webkit-scrollbar-thumb { background: #52525b; }
+body.dark #file-list::-webkit-scrollbar-thumb:hover { background: #71717a; }
+
+/* ── Icon colors (brighter for dark bg) ── */
+body.dark .icon-document     { color: #60a5fa; }
+body.dark .icon-presentation { color: #fbbf24; }
+body.dark .icon-spreadsheet  { color: #34d399; }
+body.dark .icon-drive        { color: #fdd25e; }
+body.dark .icon-archive      { color: #94a3b8; }
+body.dark .icon-unknown      { color: #6b7280; }

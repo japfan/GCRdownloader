@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnScan = document.getElementById('btn-scan');
   const btnDownload = document.getElementById('btn-download');
   const btnBack = document.getElementById('btn-back');
+  const btnTheme = document.getElementById('btn-theme');
   const checkboxAll = document.getElementById('checkbox-all');
 
   const initialState = document.getElementById('initial-state');
@@ -17,6 +18,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusBadge = document.getElementById('status-badge');
 
   let detectedFiles = [];
+
+  // ── Dark / Light mode toggle ──
+  const THEME_KEY = 'gcr_theme';
+
+  function getPreferredTheme() {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === 'dark' || saved === 'light') return saved;
+    // Default: follow system
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.body.classList.add('dark');
+      btnTheme.textContent = '☀️';
+      btnTheme.title = 'Switch ke light mode';
+    } else {
+      document.body.classList.remove('dark');
+      btnTheme.textContent = '🌙';
+      btnTheme.title = 'Switch ke dark mode';
+    }
+  }
+
+  function toggleTheme() {
+    const current = document.body.classList.contains('dark') ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    localStorage.setItem(THEME_KEY, next);
+    applyTheme(next);
+  }
+
+  // Init theme on load
+  applyTheme(getPreferredTheme());
+
+  btnTheme.addEventListener('click', toggleTheme);
 
   function showError(msg) {
     initialState.classList.add('hidden');
