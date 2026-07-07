@@ -77,8 +77,43 @@ function getExtensionByType(type) {
 function getFilename(file) {
   const hasExt = /\.[a-z0-9]{3,5}$/i.test(file.title);
   if (hasExt) return file.title;
+
+  // Coba ambil dari URL — hanya kalau URL-nya file (pluginfile, bukan view.php)
+  if (file.url && file.url.includes('pluginfile.php')) {
+    const urlName = decodeURIComponent(file.url.split('/').pop().split('?')[0]);
+    if (urlName && /\.[a-z0-9]{3,5}$/i.test(urlName)) return urlName;
+  }
+
   const ext = getExtensionByType(file.type);
-  return `${file.title}${ext}`;
+  if (ext) return `${file.title}${ext}`;
+
+  // Fallback terakhir: ambil dari downloadUrl setelah redirect
+  return file.title;
+}
+
+// ── Resolve mod/resource redirect → pluginfile.php URL ──
+async function resolveMoodleRedirect(url) {
+  if (!url.includes('mod/resource/view.php')) return url;
+
+  try {
+    const cookies = await chrome.cookies.getAll({ url: new URL(url).origin + '/' });
+    const cookieHeader = cookies.map(c => `${c.name}=${c.value}`).join('; ');
+
+    // Follow redirect & check final URL after resolution
+    const resp = await fetch(url, {
+      headers: cookieHeader ? { 'Cookie': cookieHeader } : {}
+      // redirect: 'follow' is default
+    });
+
+    // response.url = final URL after all redirects
+    if (resp.url && resp.url !== url && resp.url.includes('pluginfile.php')) {
+      console.log(`Resolved: ${url} → ${resp.url}`);
+      return resp.url;
+    }
+  } catch (e) {
+    console.warn(`Failed to resolve redirect for ${url}: ${e.message}`);
+  }
+  return url;
 }
 
 // ── Download a single file ──
@@ -89,9 +124,19 @@ async function downloadOne(file) {
     return 'opened';
   }
 
-  const downloadUrl = getDownloadUrl(file);
-  const filename = `GCR_Materi/${getFilename(file)}`;
+  // Resolve mod/resource → pluginfile.php redirect
+  let downloadUrl = getDownloadUrl(file);
+  if (downloadUrl.includes('mod/resource/view.php')) {
+    downloadUrl = await resolveMoodleRedirect(downloadUrl);
+    // Update file title & url from resolved pluginfile.php URL
+    file.url = downloadUrl;
+    const realName = decodeURIComponent(downloadUrl.split('/').pop().split('?')[0]);
+    if (realName && /\.[a-z0-9]{3,5}$/i.test(realName)) {
+      file.title = realName;
+    }
+  }
 
+  const filename = `GCR_Materi/${getFilename(file)}`;
   const isNonGoogle = file.url && !file.url.includes('google.com');
 
   // Step 1: Coba direct download dulu (browser kirim cookies otomatis)
@@ -125,7 +170,7 @@ async function downloadOne(file) {
         });
       });
     }
-    throw directErr; // Google URL gagal, rethrow
+    throw directErr;
   }
 }
 
