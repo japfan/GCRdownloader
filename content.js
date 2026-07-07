@@ -440,7 +440,18 @@
     } catch (e) {}
 
     // ═══ RESULT ═══
-    debugLogs.push(`RESULT: ${files.length} files`);
+    // Filter out unknown type files
+    const knownFiles = files.filter(f => f.type !== 'unknown');
+    debugLogs.push(`RESULT: ${knownFiles.length} files (filtered ${files.length - knownFiles.length} unknown)`);
+
+    if (knownFiles.length === 0) {
+      files.length = 0; // clear for debug push
+    } else {
+      // Replace files array with filtered
+      files.length = 0;
+      files.push(...knownFiles);
+      return files;
+    }
 
     if (files.length === 0) {
       debugLogs.push(`URL: ${window.location.href}`);
