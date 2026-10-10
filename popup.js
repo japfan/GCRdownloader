@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-      if (!tab.url.includes('classroom.google.com') && !tab.url.includes('spada.uns.ac.id')) {
+      if (!tab.url.includes('classroom.google.com') && !tab.url.includes('spada.uns.ac.id') && !tab.url.includes('spada-old.uns.ac.id')) {
         showError('Ekstensi ini bekerja di:\n• Google Classroom → tab Materi Kelas\n• SPADA UNS → halaman course\n\nBuka salah satu halaman tersebut lalu klik Scan.');
         btnScan.disabled = false;
         btnScan.textContent = 'Scan Materi';
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      if (tab.url.includes('spada.uns.ac.id') && !tab.url.includes('/course/') && !tab.url.includes('/mod/')) {
+      if ((tab.url.includes('spada.uns.ac.id') || tab.url.includes('spada-old.uns.ac.id')) && !tab.url.includes('/course/') && !tab.url.includes('/mod/')) {
         showError('Pastikan Anda sudah membuka halaman course di SPADA (course/view.php?id=...).');
         btnScan.disabled = false;
         btnScan.textContent = 'Scan Materi';

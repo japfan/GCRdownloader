@@ -14,7 +14,8 @@
     "*://classroom.google.com/*",
     "*://drive.google.com/*",
     "*://docs.google.com/*",
-    "*://spada.uns.ac.id/*"
+    "*://spada.uns.ac.id/*",
+    "*://spada-old.uns.ac.id/*"
   ],
   "background": {
     "service_worker": "background.js"

@@ -9,7 +9,7 @@
   if (host === 'classroom.google.com') {
     return scrapeGoogleClassroom();
   }
-  if (host === 'spada.uns.ac.id') {
+  if (host === 'spada.uns.ac.id' || host === 'spada-old.uns.ac.id') {
     return scrapeMoodle();
   }
   // Generic Moodle: any domain with "/course/view.php" or "/mod/" in URL
